@@ -12,11 +12,9 @@ export const extractValueFromImage = async(imageBase64: string): Promise<number>
         })
 
         const fileManager = new GoogleAIFileManager(apiKey); 
-        console.log("PASSOU AQUI fileManager", fileManager)       
         const uploadResponse = await fileManager.uploadFile(imageBase64, {
             mimeType: "image/jpeg"
         })
-        console.log("PASOU AQUI uploadResponse", uploadResponse)
 
         const result = await model.generateContent([
             {
@@ -27,7 +25,6 @@ export const extractValueFromImage = async(imageBase64: string): Promise<number>
             },
             { text: prompt }
         ])
-        console.log("PASSOU AQUI result", result)
 
         const value: number = parseInt(result.response.text())
         return value

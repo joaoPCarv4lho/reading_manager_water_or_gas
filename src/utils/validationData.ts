@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { uploadRequestBody } from "../interfaces/index";
 import { findMeasurementRepository } from "../repositories/sendImageRepositorie";
 
@@ -18,7 +18,7 @@ class ValidateRequestBody {
         }
 
         // Validate measureDateTime format
-        if (!moment(measureDateTime, moment.ISO_8601, true).isValid()) {
+        if (!dayjs(measureDateTime, 'MM-YYYY', true).isValid()) {
             return false;
         }
 
@@ -27,14 +27,16 @@ class ValidateRequestBody {
             return false;
         }
 
+        console.log(measureDateTime)
         return true;
     }
 }
 
 class CheckExistingReading {
     async execute(customerId: string, measureDateTime: string, measureType: 'WATER' | 'GAS'): Promise<boolean> {
-        const monthYear = moment(measureDateTime).format('MM-YYYY');
+        const monthYear = dayjs(measureDateTime).format('MM-YYYY');
 
+        console.log(monthYear)
         const existingReading = await findMeasurementRepository(customerId, measureType, monthYear);
         return existingReading !== null;
     }
